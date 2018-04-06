@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"SecondLab","l":"Collaborator"},{"p":"SecondLab","l":"Engineer"},{"p":"SecondLab","l":"Gui"},{"p":"SecondLab","l":"Professor"},{"p":"SecondLab","l":"Student"},{"p":"SecondLab","l":"StudentRecord_book"},{"p":"SecondLab","l":"University"}]
