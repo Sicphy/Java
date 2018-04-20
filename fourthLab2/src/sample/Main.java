@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import Threads.*;
 
 public class Main extends Application {
+    private MainThread mainThread = new MainThread();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -30,7 +31,6 @@ public class Main extends Application {
         Button requredButton = new Button("enter");
         TextField requredField = new TextField();
         Button startButton = new Button("start");
-        MainThread mainThread = new MainThread();
         requredField.setMaxWidth(80);
 
         root.add(plusCheckBox, 0, 1);
@@ -77,7 +77,9 @@ public class Main extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-
+                mainThread = new MainThread();
+                winnerLabel.setText("Введите требуемое число.");
+                requredField.setText("");
             }
         });
 

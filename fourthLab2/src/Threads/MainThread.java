@@ -1,17 +1,22 @@
 package Threads;
 
 import java.util.LinkedList;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainThread {
-    private AtomicInteger counter = new AtomicInteger(0);
-    private Integer requiredValue = null;
-    private LinkedList<Thread> threads = new LinkedList<Thread>();
+    private AtomicInteger counter;
+    private Integer requiredValue;
+    private LinkedList<Thread> threads;
     private int winnerId;
+    final SynchronousQueue<Integer> queue = new SynchronousQueue<Integer>();
 
     public MainThread() {
-
+        this.threads = new LinkedList<Thread>();
+        //this.counter = new AtomicInteger(0);
+        this.counter = new AtomicInteger(0);
+        this.requiredValue = null;
     }
 
     public boolean isEmpty() {
@@ -30,22 +35,14 @@ public class MainThread {
         this.winnerId = id;
     }
 
-    public synchronized int getWinnerId() {
-        /*try {
-            while(!Debater.canceled)
-                //wait();
-        } catch (InterruptedException e) {
-            System.out.println("wait exception");
-        }*/
-
+    public int getWinnerId() {
         try {
-            TimeUnit.MILLISECONDS.sleep(5000);
+           winnerId = queue.take();
         } catch (InterruptedException e) {
-            System.out.println("sleep interrupted");
+            e.printStackTrace();
         }
 
         return this.winnerId;
-
     }
 
     public void createThread(char direction) {
@@ -58,8 +55,4 @@ public class MainThread {
         }
     }
 
-    public void destroyThread() {
-        for(Thread t : threads) {
-        }
-    }
 }
