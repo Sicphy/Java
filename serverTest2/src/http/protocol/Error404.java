@@ -4,16 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class Favicon implements GetMethod {
-    private File file = new File("src/Favicon.ico");
+public class Error404 implements GetMethod {
+    File file = new File("src/Error404.html");
 
     @Override
     public String arrangeResponse() {
-        String response = "HTTP/1.1 200 OK\r\n" +
+        String response = "HTTP/1.1 404 PAGE NOT FOUND\r\n" +
                 "Server: some-test-server\r\n" +
-                "Content-Type: image/x-icon\r\n" +
+                "Content-Type: text/html\r\n" +
                 "Content-Length: " + file.length() + "\r\n" +
-                "Connection: close\r\n\r\n";
+                "Connection: keep-alive\r\n\r\n";
         return response;
     }
 

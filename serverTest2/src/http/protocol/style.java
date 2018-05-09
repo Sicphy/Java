@@ -4,19 +4,20 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class Favicon implements GetMethod {
-    private File file = new File("src/Favicon.ico");
+public class style implements GetMethod {
+    private File file = new File("src/style.css");
 
     @Override
     public String arrangeResponse() {
         String response = "HTTP/1.1 200 OK\r\n" +
                 "Server: some-test-server\r\n" +
-                "Content-Type: image/x-icon\r\n" +
+                "Content-Type: text/css\r\n" +
                 "Content-Length: " + file.length() + "\r\n" +
                 "Connection: close\r\n\r\n";
         return response;
     }
 
+    @Override
     public byte[] getBodyResponse() {
         try {
             return Files.readAllBytes(file.toPath());

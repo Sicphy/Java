@@ -4,8 +4,8 @@ import java.lang.reflect.Method;
 import java.util.PropertyResourceBundle;
 
 public class GetCommand {
-
-    private static final String GET_CLASS = "get.class";
+    private Class cl;
+    private GetMethod getMethod;
 
     GetCommand() {
 
@@ -14,18 +14,19 @@ public class GetCommand {
     public String chooseGetClass(String url) {
         PropertyResourceBundle pr = (PropertyResourceBundle)
                 PropertyResourceBundle.getBundle("http.protocol.get");
-        String className = pr.getString(url);
+        String className = null;
+
+        if(pr.containsKey(url)) {
+            className = pr.getString(url);
+        } else {
+            className = pr.getString("Error404");
+        }
+
         try {
             Class cl = Class.forName(className);
+            this.cl = cl;
             GetMethod method = (GetMethod) cl.newInstance();
-
-            try {
-                String returning;
-                returning = demoReflectionMethod(cl, method);
-                return returning;
-            } catch (Exception e) {
-                e.printStackTrace(System.out);
-            }
+            this.getMethod = method;
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             ex.printStackTrace(System.out);
         }
@@ -33,9 +34,15 @@ public class GetCommand {
         return null;
     }
 
-    private static String demoReflectionMethod(Class cl, GetMethod sc) throws Exception {
-        Method method1 = cl.getMethod("arrangeResponse");
-        String simple = (String)method1.invoke(sc);
+    public String getResponseMethod() throws Exception {
+        Method method1 = this.cl.getMethod("arrangeResponse");
+        String simple = (String)method1.invoke(this.getMethod);
+        return simple;
+    }
+
+    public byte[] getBodyResponseMethod() throws Exception {
+        Method method1 = this.cl.getMethod("getBodyResponse");
+        byte[] simple = (byte[])method1.invoke(this.getMethod);
         return simple;
     }
 }

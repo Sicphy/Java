@@ -1,6 +1,5 @@
 package http.protocol;
 
-
 import java.io.OutputStream;
 
 public class HttpResponse {
@@ -18,8 +17,10 @@ public class HttpResponse {
 
     public void writeResponse() throws Throwable {
         GetCommand getCommand = new GetCommand();
-        String result = getCommand.chooseGetClass(this.request.getUrl());
-        os.write(result.getBytes());
+        getCommand.chooseGetClass(this.request.getUrl());
+        os.write(getCommand.getResponseMethod().getBytes());
+        os.write(getCommand.getBodyResponseMethod());
+        //os.write(result.getBytes());
         os.flush();
     }
 }
