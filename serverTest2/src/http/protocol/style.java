@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class style implements GetMethod {
-    private File file = new File("src/style.css");
+public class Style implements GetMethod {
+    private File file = new File("src/Style.css");
 
     @Override
-    public String arrangeResponse() {
+    public String arrangeResponse(String fileName) {
         String response = "HTTP/1.1 200 OK\r\n" +
                 "Server: some-test-server\r\n" +
                 "Content-Type: text/css\r\n" +
@@ -18,7 +18,7 @@ public class style implements GetMethod {
     }
 
     @Override
-    public byte[] getBodyResponse() {
+    public byte[] getBodyResponse(String fileName) {
         try {
             return Files.readAllBytes(file.toPath());
         } catch (IOException e) {

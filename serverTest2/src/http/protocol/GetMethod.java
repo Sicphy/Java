@@ -1,7 +1,7 @@
 package http.protocol;
 
 public interface GetMethod {
-     String arrangeResponse();
-     byte[] getBodyResponse();
+     String arrangeResponse(String fileName);
+     byte[] getBodyResponse(String fileName);
 }
 

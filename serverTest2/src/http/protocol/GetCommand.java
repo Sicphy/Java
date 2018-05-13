@@ -11,13 +11,18 @@ public class GetCommand {
 
     }
 
-    public String chooseGetClass(String url) {
+    public String chooseGetClass(String url, String fileName) {
+        Wallpaper wallpaper = new Wallpaper("src/wallpaper");
         PropertyResourceBundle pr = (PropertyResourceBundle)
                 PropertyResourceBundle.getBundle("http.protocol.get");
         String className = null;
 
-        if(pr.containsKey(url)) {
-            className = pr.getString(url);
+        if(pr.containsKey(url) && (fileName == null || wallpaper.isExist(fileName))) {
+            if(url.equals("/wallpaper") && fileName == null) {
+                className = pr.getString("Error404");
+            } else {
+                className = pr.getString(url);
+            }
         } else {
             className = pr.getString("Error404");
         }
@@ -34,15 +39,17 @@ public class GetCommand {
         return null;
     }
 
-    public String getResponseMethod() throws Exception {
-        Method method1 = this.cl.getMethod("arrangeResponse");
-        String simple = (String)method1.invoke(this.getMethod);
-        return simple;
+    public String getResponseMethod(String fileName) throws Exception {
+        Class[] paramTypes = new Class[] {String.class};
+        Method method = this.cl.getMethod("arrangeResponse", paramTypes);
+        String answer = (String)method.invoke(this.getMethod, fileName);
+        return answer;
     }
 
-    public byte[] getBodyResponseMethod() throws Exception {
-        Method method1 = this.cl.getMethod("getBodyResponse");
-        byte[] simple = (byte[])method1.invoke(this.getMethod);
-        return simple;
+    public byte[] getBodyResponseMethod(String fileName) throws Exception {
+        Class[] paramTypes = new Class[] {String.class};
+        Method method = this.cl.getMethod("getBodyResponse", paramTypes);
+        byte[] answer = (byte[])method.invoke(this.getMethod, fileName);
+        return answer;
     }
 }

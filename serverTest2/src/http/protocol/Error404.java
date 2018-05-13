@@ -8,7 +8,7 @@ public class Error404 implements GetMethod {
     File file = new File("src/Error404.html");
 
     @Override
-    public String arrangeResponse() {
+    public String arrangeResponse(String fileName) {
         String response = "HTTP/1.1 404 PAGE NOT FOUND\r\n" +
                 "Server: some-test-server\r\n" +
                 "Content-Type: text/html\r\n" +
@@ -17,7 +17,7 @@ public class Error404 implements GetMethod {
         return response;
     }
 
-    public byte[] getBodyResponse() {
+    public byte[] getBodyResponse(String fileName) {
         try {
             return Files.readAllBytes(file.toPath());
         } catch (IOException e) {

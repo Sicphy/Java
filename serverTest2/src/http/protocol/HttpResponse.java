@@ -17,9 +17,10 @@ public class HttpResponse {
 
     public void writeResponse() throws Throwable {
         GetCommand getCommand = new GetCommand();
-        getCommand.chooseGetClass(this.request.getUrl());
-        os.write(getCommand.getResponseMethod().getBytes());
-        os.write(getCommand.getBodyResponseMethod());
+        Wallpaper wallpaper = new Wallpaper("src/wallpaper");
+        getCommand.chooseGetClass(this.request.getUrl(), this.request.getImageName());
+        os.write(getCommand.getResponseMethod(this.request.getImageName()).getBytes());
+        os.write(getCommand.getBodyResponseMethod(this.request.getImageName()));
         //os.write(result.getBytes());
         os.flush();
     }

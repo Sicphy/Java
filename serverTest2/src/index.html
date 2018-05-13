@@ -16,7 +16,7 @@
     <nav>
         <ul>
             <li><a href="" class="nav-link">Home</a></li>
-            <li><a href="" class="nav-link">About</a></li>
+            <li><a href="http://localhost:8080/about" class="nav-link">About</a></li>
             <li><a href="" class="nav-link">Reviews</a></li>
         </ul>
     </nav>
@@ -28,13 +28,20 @@
 </header>
 <main>
     <div class="image-wrapper">
-        <img src="http://localhost:8080/cat-image" class="image" alt="обои"/>
-        <a class="image-link" href="http://localhost:8080/cat-image">Download: 596*380</a>
+        <img src="http://localhost:8080/wallpaper/cat" class="image" alt="обои"/>
+        <a class="image-link" href="http://localhost:8080/wallpaper/cat">Download: 596*380</a>
     </div>
     <div class="image-wrapper">
-        <img src="http://localhost:8080/dog-image" class="image" alt="обои"/>
-        <a class="image-link" href="http://localhost:8080/dog-image">Download: 1366*768</a>
+        <img src="http://localhost:8080/wallpaper/dog" class="image" alt="обои"/>
+        <a class="image-link" href="http://localhost:8080/wallpaper/dog">Download: 1366*768</a>
     </div>
+
+    <form method="DELETE" action="http://localhost:8080/dog-image">
+        <p>Имя: <input type="text" name="name"></p>
+        <p>Сообщение:<br><textarea name="message"></textarea></p>
+        <p><button type="submit">Отправить </button></p>
+    </form>
+
 </main>
 </body>
 </html>
