@@ -9,6 +9,7 @@ public class Wallpaper {
         this.folder = new File(folderName);
     }
 
+
     public boolean isExist(String imageName) {
         File[] listOfFiles = folder.listFiles();
 
@@ -18,5 +19,18 @@ public class Wallpaper {
             }
         }
         return false;
+    }
+
+    public String getWallpapers() {
+        File[] listOfFiles = folder.listFiles();
+        String wallpapersNames = new String();
+
+
+        for(int i=0; i<listOfFiles.length; i++) {
+            wallpapersNames += listOfFiles[i].getName().substring(0, listOfFiles[i].getName().lastIndexOf('.'));
+            wallpapersNames += " ";
+        }
+
+        return wallpapersNames;
     }
 }

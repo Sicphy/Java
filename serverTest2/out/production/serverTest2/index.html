@@ -10,7 +10,58 @@
             integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl"
             crossorigin="anonymous"></script>
 </head>
-<body>
+<body onload="vote()">
+<script>
+    function getXmlHttp(){
+        var xmlhttp;
+        try {
+            xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            try {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (E) {
+                xmlhttp = false;
+            }
+        }
+        if (!xmlhttp && typeof XMLHttpRequest!='undefined') {
+            xmlhttp = new XMLHttpRequest();
+        }
+        return xmlhttp;
+    }
+
+
+    function vote() {
+        var xmlhttp = getXmlHttp();
+        var url = "myTutorials.txt";
+
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var arr = this.responseText.split(' ');
+                myFunction(arr);
+            }
+        };
+        xmlhttp.open("GET", "http://localhost:8080/array_of_wallpaper",false);
+        xmlhttp.send(null);
+    }
+
+    function myFunction(names) {
+        var main = document.createElement('main');
+        for (var i = 0; i < names.length; i++) {
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            var a = document.createElement('a');
+            div.className = 'image-wrapper';
+            img.setAttribute('src', 'http://localhost:8080/wallpaper/' + names[i]);
+            img.className = 'image';
+            a.setAttribute('href', 'http://localhost:8080/wallpaper/' + names[i]);
+            a.appendChild(img);
+            div.appendChild(a);
+            main.appendChild(div);
+        }
+        document.body.appendChild(main);
+    }
+</script>
+
 <header>
     <div class="logo-wrapper"><p class="logo">MyGoodFon</p></div>
     <nav>
@@ -26,22 +77,5 @@
         <a href="" class="social-icons-link"><i class="fab fa-facebook-f"></i></a>
     </div>
 </header>
-<main>
-    <div class="image-wrapper">
-        <img src="http://localhost:8080/wallpaper/cat" class="image" alt="обои"/>
-        <a class="image-link" href="http://localhost:8080/wallpaper/cat">Download: 596*380</a>
-    </div>
-    <div class="image-wrapper">
-        <img src="http://localhost:8080/wallpaper/dog" class="image" alt="обои"/>
-        <a class="image-link" href="http://localhost:8080/wallpaper/dog">Download: 1366*768</a>
-    </div>
-
-    <form method="DELETE" action="http://localhost:8080/dog-image">
-        <p>Имя: <input type="text" name="name"></p>
-        <p>Сообщение:<br><textarea name="message"></textarea></p>
-        <p><button type="submit">Отправить </button></p>
-    </form>
-
-</main>
 </body>
 </html>
