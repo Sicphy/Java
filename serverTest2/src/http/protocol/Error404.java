@@ -1,4 +1,4 @@
-package http.protocol;
+/*package http.protocol;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,3 +26,4 @@ public class Error404 implements GetMethod {
         return null;
     }
 }
+*/

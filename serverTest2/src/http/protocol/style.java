@@ -1,4 +1,4 @@
-package http.protocol;
+/*package http.protocol;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,3 +27,4 @@ public class Style implements GetMethod {
         return null;
     }
 }
+*/

@@ -1,4 +1,4 @@
-package http.protocol;
+/*package http.protocol;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,4 +23,4 @@ public class Test implements GetMethod {
     public byte[] getBodyResponse(String fileName) {
         return wallpapers.getBytes();
     }
-}
+}*/

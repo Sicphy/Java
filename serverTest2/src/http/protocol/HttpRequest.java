@@ -67,4 +67,5 @@ public class HttpRequest {
         return this.url;
     }
     public String getImageName() { return this.imageName; }
+    public String  getMethod() { return this.method; }
 }
