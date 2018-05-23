@@ -2,13 +2,8 @@ package http.protocol;
 
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.io.InputStream;
-import java.io.OutputStream;
-import http.protocol.HttpRequest;
 
-/**
- * Created by yar 09.09.2009
- */
+
 public class HttpServer {
 
     public static void main(String[] args) throws Throwable {

@@ -1,9 +1,7 @@
 package http.protocol;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.Socket;
 import java.util.HashMap;
 
 public class HttpRequest {
@@ -14,6 +12,7 @@ public class HttpRequest {
     private String url;
     private String imageName;
     private HashMap<String, String> attributes;
+    private Socket s;
 
     HttpRequest(InputStream is) {
         this.is = is;
@@ -23,6 +22,8 @@ public class HttpRequest {
 
     public void readInputHeaders() throws Throwable {
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+
         while(true) {
             String s = br.readLine();
             if(s == null || s.trim().length() == 0) {
@@ -30,10 +31,32 @@ public class HttpRequest {
             }
             this.request += s;
             this.request += "\n";
-            //System.out.println(s);
         }
-        System.out.println(request);
+
         setHttpHeader(request);
+
+        if(method.equals("PUT")) {
+            long s;
+            DataInputStream dis = new DataInputStream(is);
+            s = dis.readLong();
+            String fileName = dis.readUTF();
+            System.out.println("File size: " + s);
+            byte[] byteArray = new byte[1024];
+            File f = new File("src/" + fileName);
+            f.createNewFile();
+            FileOutputStream fos = new FileOutputStream(f);
+            int sp = (int) (s / 1024);
+            if (s % 1024 != 0) sp++;
+            BufferedInputStream bis = new BufferedInputStream(is);
+            while (s > 0) {
+                int i = bis.read(byteArray);
+                fos.write(byteArray, 0, i);
+                s -= i;
+            }
+            fos.close();
+        }
+
+        System.out.println(request);
         System.out.println(method);
         System.out.println(url);
         System.out.println(version);
