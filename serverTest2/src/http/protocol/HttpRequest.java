@@ -10,14 +10,13 @@ public class HttpRequest {
     private String method;
     private String version;
     private String url;
-    private String imageName;
+    private String fileName;
     private HashMap<String, String> attributes;
-    private Socket s;
 
     HttpRequest(InputStream is) {
         this.is = is;
         request = new String();
-        imageName = null;
+        fileName = null;
     }
 
     public void readInputHeaders() throws Throwable {
@@ -34,19 +33,15 @@ public class HttpRequest {
         }
 
         setHttpHeader(request);
+        System.out.println(request);
 
         if(method.equals("PUT")) {
             long s;
-            DataInputStream dis = new DataInputStream(is);
-            s = dis.readLong();
-            String fileName = dis.readUTF();
-            System.out.println("File size: " + s);
+            s = Integer.parseInt(attributes.get("content-length"));
             byte[] byteArray = new byte[1024];
-            File f = new File("src/" + fileName);
+            File f = new File("src/repository/" + fileName);
             f.createNewFile();
             FileOutputStream fos = new FileOutputStream(f);
-            int sp = (int) (s / 1024);
-            if (s % 1024 != 0) sp++;
             BufferedInputStream bis = new BufferedInputStream(is);
             while (s > 0) {
                 int i = bis.read(byteArray);
@@ -56,12 +51,14 @@ public class HttpRequest {
             fos.close();
         }
 
+
+        System.out.println(Integer.parseInt(attributes.get("content-length")) + 1);
         System.out.println(request);
         System.out.println(method);
         System.out.println(url);
         System.out.println(version);
         System.out.println(attributes);
-        System.out.println(imageName);
+        System.out.println("File name: " + fileName);
     }
 
     private void setHttpHeader(String header) throws IOException
@@ -69,14 +66,11 @@ public class HttpRequest {
         attributes = new HashMap<String, String>(); // init new attributes
         String [] headerLines = header.split("\r?\n"); // split it into all lines
         String [] firstLineFields = headerLines[0].split(" "); // split first line
-        //if(firstLineFields.length != 3) throw new IOException(); // Bad request
+        if(firstLineFields.length != 3) throw new IOException(); // Bad request
         version = firstLineFields[2].trim(); // Version eg HTTP/1.0
         method = firstLineFields[0].trim(); // Action = GET, HEAD, POST, etc
         url = firstLineFields[1].trim(); // Parameter for action. eg URI, etc
-        if(url.contains("/wallpaper/")) {
-            imageName = url.substring(url.lastIndexOf("/wallpaper/")+11);
-            url = url.substring(0, url.lastIndexOf("/wallpaper/")+10);
-        }
+        fileName = url.substring(1);
 
         for(int i = 1; i < headerLines.length; ++i)
         {
@@ -89,6 +83,6 @@ public class HttpRequest {
     public String getUrl() {
         return this.url;
     }
-    public String getImageName() { return this.imageName; }
+    public String getFileName() { return this.fileName; }
     public String  getMethod() { return this.method; }
 }

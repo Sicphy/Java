@@ -9,53 +9,36 @@ import java.util.PropertyResourceBundle;
 import static http.protocol.StringConstants.*;
 
 public class GetMethod implements HttpMethod {
+     private File file;
 
-     public void executeMethod(String url, OutputStream os) {
+     public void executeMethod(String fileName, OutputStream os) {
           try {
-               os.write(arrangeResponse(url).getBytes());
-               os.write(getBodyResponse(url));
+               os.write(arrangeResponse(fileName).getBytes());
+               os.write(getBodyResponse(fileName));
           } catch (IOException e) {
                e.printStackTrace();
           }
      }
 
-     private String arrangeResponse(String url) {
-          Wallpaper wallpaper = new Wallpaper("src/wallpaper");
-          PropertyResourceBundle urlPR = (PropertyResourceBundle)
-                  PropertyResourceBundle.getBundle("http.protocol.get");
+     private String arrangeResponse(String fileName) {
+          Folder folder = new Folder(
+                  "src/repository");
           PropertyResourceBundle contentTypePR = (PropertyResourceBundle)
                   PropertyResourceBundle.getBundle("http.protocol.contentType");
-          String fileName = null;
           String codeResponse;
           String contentType = "text/html";
-          File file = null;
           String expansion;
 
-          if(urlPR.containsKey(url)) {
+          expansion = fileName.substring(fileName.lastIndexOf('.'));
+
+          if (folder.isExist(fileName)) {
                codeResponse = okResponse;
-
-               fileName = urlPR.getString(url);
-
-               expansion = fileName.substring(fileName.lastIndexOf('.'));
                contentType = contentTypePR.getString(expansion);
-
-               System.out.println(expansion);
-
-               if(expansion.equals(".txt") || expansion.equals(".html") || expansion.equals(".css")) {
-                    file = new File("src/text/" + fileName);
-               } else {
-                    if(expansion.equals(".gif") || expansion.equals(".jpg") || expansion.equals(".png") || expansion.equals(".ico")) {
-                         file = new File("src/images/" + fileName);
-                    } else {
-                         codeResponse = notFoundRespones;
-                         file = new File("src/text/Error404.html");
-                    }
-               }
+               file = new File("src/repository/" + fileName);
           } else {
                codeResponse = notFoundRespones;
-               file = new File("src/text/Error404.html");
+               file = new File("src/repository/Error404.html");
           }
-
 
           String response = "HTTP/1.1" + codeResponse + "\r\n" +
                   "Server: some-test-server\r\n" +
@@ -66,31 +49,7 @@ public class GetMethod implements HttpMethod {
           return response;
      }
 
-     private byte[] getBodyResponse(String url) {
-          Wallpaper wallpaper = new Wallpaper("src/wallpaper");
-          PropertyResourceBundle urlPR = (PropertyResourceBundle)
-                  PropertyResourceBundle.getBundle("http.protocol.get");
-          String fileName = null;
-          File file = null;
-          String expansion;
-
-          if(urlPR.containsKey(url)) {
-               fileName = urlPR.getString(url);
-               expansion = fileName.substring(fileName.lastIndexOf('.'));
-
-               if(expansion.equals(".txt") || expansion.equals(".html") || expansion.equals(".css")) {
-                    file = new File("src/text/" + fileName);
-               } else {
-                    if(expansion.equals(".gif") || expansion.equals(".jpg") || expansion.equals(".png") || expansion.equals(".ico")) {
-                         file = new File("src/images/" + fileName);
-                    } else {
-                         file = new File("src/text/Error404.html");
-                    }
-               }
-          } else {
-               file = new File("src/text/Error404.html");
-          }
-
+     private byte[] getBodyResponse(String fileName) {
           try {
                return Files.readAllBytes(file.toPath());
           } catch (IOException e) {
@@ -99,4 +58,3 @@ public class GetMethod implements HttpMethod {
           return null;
      }
 }
-

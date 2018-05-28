@@ -19,7 +19,7 @@ public class HeadMethod implements HttpMethod {
     }
 
     private String arrangeResponse(String url) {
-        Wallpaper wallpaper = new Wallpaper("src/wallpaper");
+        Folder wallpaper = new Folder("src/wallpaper");
         PropertyResourceBundle urlPR = (PropertyResourceBundle)
                 PropertyResourceBundle.getBundle("http.protocol.get");
         PropertyResourceBundle contentTypePR = (PropertyResourceBundle)

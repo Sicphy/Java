@@ -14,7 +14,7 @@ public class ChooseMethod {
 
 
     public String chooseMethodClass(String method) {
-        Wallpaper wallpaper = new Wallpaper("src/wallpaper");
+        Folder wallpaper = new Folder("src/wallpaper");
         PropertyResourceBundle pr = (PropertyResourceBundle)
                 PropertyResourceBundle.getBundle("http.protocol.methods");
         String className = null;
