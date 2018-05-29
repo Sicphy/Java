@@ -1,7 +1,6 @@
 package http.protocol;
 
 import java.io.*;
-import java.net.Socket;
 import java.util.HashMap;
 
 public class HttpRequest {
@@ -51,8 +50,6 @@ public class HttpRequest {
             fos.close();
         }
 
-
-        System.out.println(Integer.parseInt(attributes.get("content-length")) + 1);
         System.out.println(request);
         System.out.println(method);
         System.out.println(url);
@@ -63,20 +60,20 @@ public class HttpRequest {
 
     private void setHttpHeader(String header) throws IOException
     {
-        attributes = new HashMap<String, String>(); // init new attributes
-        String [] headerLines = header.split("\r?\n"); // split it into all lines
-        String [] firstLineFields = headerLines[0].split(" "); // split first line
-        if(firstLineFields.length != 3) throw new IOException(); // Bad request
-        version = firstLineFields[2].trim(); // Version eg HTTP/1.0
-        method = firstLineFields[0].trim(); // Action = GET, HEAD, POST, etc
-        url = firstLineFields[1].trim(); // Parameter for action. eg URI, etc
+        attributes = new HashMap<String, String>();
+        String [] headerLines = header.split("\r?\n");
+        String [] firstLineFields = headerLines[0].split(" ");
+        if(firstLineFields.length != 3) throw new IOException();
+        version = firstLineFields[2].trim();
+        method = firstLineFields[0].trim();
+        url = firstLineFields[1].trim();
         fileName = url.substring(1);
 
         for(int i = 1; i < headerLines.length; ++i)
         {
-            String []tokns = headerLines[i].split(": "); // Split at :
-            if(tokns.length != 2) continue; // Bad attribute case
-            attributes.put(tokns[0].trim().toLowerCase(), tokns[1].trim()); // param name->small, param value->original
+            String []tokns = headerLines[i].split(": ");
+            if(tokns.length != 2) continue;
+            attributes.put(tokns[0].trim().toLowerCase(), tokns[1].trim());
         }
     }
 

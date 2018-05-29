@@ -12,7 +12,6 @@ public class ChooseMethod {
 
     }
 
-
     public String chooseMethodClass(String method) {
         Folder wallpaper = new Folder("src/wallpaper");
         PropertyResourceBundle pr = (PropertyResourceBundle)

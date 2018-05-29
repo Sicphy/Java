@@ -21,32 +21,30 @@ public class GetMethod implements HttpMethod {
      }
 
      private String arrangeResponse(String fileName) {
-          Folder folder = new Folder(
-                  "src/repository");
+          Folder folder = new Folder("src/repository");
           PropertyResourceBundle contentTypePR = (PropertyResourceBundle)
                   PropertyResourceBundle.getBundle("http.protocol.contentType");
-          String codeResponse;
-          String contentType = "text/html";
           String expansion;
+          Response response = new Response();
 
-          expansion = fileName.substring(fileName.lastIndexOf('.'));
+          if(fileName.contains(".")) {
+               expansion = fileName.substring(fileName.lastIndexOf('.'));
+          } else {
+               expansion = null;
+          }
 
           if (folder.isExist(fileName)) {
-               codeResponse = okResponse;
-               contentType = contentTypePR.getString(expansion);
+               response.setState(okResponse);
+               response.setType(contentTypePR.getString(expansion));
                file = new File("src/repository/" + fileName);
           } else {
-               codeResponse = notFoundRespones;
+               response.setState(notFoundResponse);
+               response.setState("text/html");
                file = new File("src/repository/Error404.html");
           }
 
-          String response = "HTTP/1.1" + codeResponse + "\r\n" +
-                  "Server: some-test-server\r\n" +
-                  "Content-Type: " + contentType + "\r\n" +
-                  "Content-Length: " + file.length() + "\r\n" +
-                  "Connection: close\r\n\r\n";
-
-          return response;
+          response.setLength(file.length());
+          return response.getResponse();
      }
 
      private byte[] getBodyResponse(String fileName) {

@@ -7,7 +7,8 @@ public class StringConstants {
     public static String postRequestAction = "POST";
     public static String notFoundCode ="404";
     public static String notFoundMessage = "PAGE NOT FOUND";
-    public static String notFoundRespones = "404 PAGE NOT FOUND"; // !!!!!
+    public static String notFoundResponse = "404 PAGE NOT FOUND"; // !!!!!
+    public static String createResponse = "201 CREATED"; // !!!!!
     public static String connection = "Connection";
     public static String contentType = "Content-Type";
     public static String keepAlive = "Keep-Alive";

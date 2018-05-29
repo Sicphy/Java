@@ -7,15 +7,22 @@ import java.net.Socket;
 public class HttpServer {
 
     public static void main(String[] args) throws Throwable {
-        ServerSocket ss = new ServerSocket(8080);
+        int portNumber = 8080;
+        ServerSocket ss = new ServerSocket(portNumber);
+        ThreadPool threadPool = new ThreadPool();
         while (true) {
             Socket s = ss.accept();
             System.err.println("Client accepted");
-            new Thread(new SocketProcessor(s)).start();
+            Thread thread = threadPool.getThread(new SocketProcessor(s));
+            while(thread == null) {
+                thread = threadPool.getThread(new SocketProcessor(s));
+            }
+            thread.start();
+            //new Thread(new SocketProcessor(s)).start();
         }
     }
 
-    private static class SocketProcessor implements Runnable {
+    public static class SocketProcessor implements Runnable {
 
         private Socket s;
         private HttpRequest request;

@@ -1,19 +1,19 @@
 package http.protocol;
 
 import java.io.*;
-import java.util.Properties;
+
+import static http.protocol.StringConstants.createResponse;
 
 public class PutMethod implements HttpMethod {
     @Override
     public void executeMethod(String fileName, OutputStream os) {
-        String response = "HTTP/1.1 200 OK\r\n" +
-                "Server: some-test-server\r\n" +
-                //"Content-Type: text/html\r\n" +
-                //"Content-Length: " + file.length() + "\r\n" +
-                "Connection: keep-alive\r\n\r\n";
+
+        Response response = new Response();
+        response.setType(createResponse);
+        response.setContentLocation(fileName);
 
         try {
-            os.write(response.getBytes());
+            os.write(response.getResponse().getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }

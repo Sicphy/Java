@@ -3,7 +3,7 @@ package http.protocol;
 import java.io.*;
 
 public class Folder {
-    private File folder = null;
+    private File folder;
 
     Folder(String folderName) {
         this.folder = new File(folderName);
