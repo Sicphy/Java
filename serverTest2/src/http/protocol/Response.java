@@ -24,8 +24,8 @@ public class Response {
         this.length = "Content-Length: " + length + "\r\n";
     }
 
-    public void setContentLocation(String locateion) {
-        this.location = "Content-Location: /" + locateion;
+    public void setContentLocation(String location) {
+        this.location = "Content-Location: /" + location + "\r\n";
     }
 
     public void setType(String type) {
@@ -37,7 +37,7 @@ public class Response {
         this.date = "Date: " + date.toString() + "\r\n";
         connection = "Connection: close\r\n";
         server = "Server: some-test-server\r\n";
-        response = state + this.date + server;
+        response = this.state + this.date + server;
         if(length != null) {
             response += length;
         }

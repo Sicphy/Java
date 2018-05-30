@@ -3,14 +3,22 @@ package http.protocol;
 import java.io.*;
 
 import static http.protocol.StringConstants.createResponse;
+import static http.protocol.StringConstants.internalServerErrorResponse;
 
 public class PutMethod implements HttpMethod {
     @Override
     public void executeMethod(String fileName, OutputStream os) {
 
         Response response = new Response();
-        response.setType(createResponse);
-        response.setContentLocation(fileName);
+        Folder folder = new Folder("src/repository");
+
+
+        if(folder.isExist(fileName)) {
+            response.setState(createResponse);
+            response.setContentLocation(fileName);
+        } else {
+            response.setState(internalServerErrorResponse);
+        }
 
         try {
             os.write(response.getResponse().getBytes());

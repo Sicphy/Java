@@ -23,18 +23,27 @@ public class HeadMethod implements HttpMethod {
         PropertyResourceBundle contentTypePR = (PropertyResourceBundle)
                 PropertyResourceBundle.getBundle("http.protocol.contentType");
         String expansion;
-        Response response = new Response();
         File file;
+        Response response = new Response();
 
-        expansion = fileName.substring(fileName.lastIndexOf('.'));
-
-        if (folder.isExist(fileName)) {
-            response.setState(okResponse);
-            response.setType(contentTypePR.getString(expansion));
-            file = new File("src/repository/" + fileName);
+        if(fileName == null) {
+            response.setState(notFoundResponse);
+            response.setState("text/html");
+            file = new File("src/repository/Error404.html");
+        } else if(fileName.contains(".")) {
+            expansion = fileName.substring(fileName.lastIndexOf('.'));
+            if (folder.isExist(fileName)) {
+                response.setState(okResponse);
+                response.setType(contentTypePR.getString(expansion));
+                file = new File("src/repository/" + fileName);
+            } else {
+                response.setState(notFoundResponse);
+                response.setState("text/html");
+                file = new File("src/repository/Error404.html");
+            }
         } else {
             response.setState(notFoundResponse);
-            response.setType("text/html");
+            response.setState("text/html");
             file = new File("src/repository/Error404.html");
         }
 

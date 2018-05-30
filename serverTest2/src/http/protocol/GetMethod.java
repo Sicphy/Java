@@ -27,16 +27,21 @@ public class GetMethod implements HttpMethod {
           String expansion;
           Response response = new Response();
 
-          if(fileName.contains(".")) {
+          if(fileName == null) {
+               response.setState(notFoundResponse);
+               response.setState("text/html");
+               file = new File("src/repository/Error404.html");
+          } else if(fileName.contains(".")) {
                expansion = fileName.substring(fileName.lastIndexOf('.'));
-          } else {
-               expansion = null;
-          }
-
-          if (folder.isExist(fileName)) {
-               response.setState(okResponse);
-               response.setType(contentTypePR.getString(expansion));
-               file = new File("src/repository/" + fileName);
+               if (folder.isExist(fileName)) {
+                    response.setState(okResponse);
+                    response.setType(contentTypePR.getString(expansion));
+                    file = new File("src/repository/" + fileName);
+               } else {
+                    response.setState(notFoundResponse);
+                    response.setState("text/html");
+                    file = new File("src/repository/Error404.html");
+               }
           } else {
                response.setState(notFoundResponse);
                response.setState("text/html");

@@ -3,7 +3,6 @@ package http.protocol;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-
 public class HttpServer {
 
     public static void main(String[] args) throws Throwable {

@@ -22,7 +22,8 @@ public class StringConstants {
     public static String host = "Host";
     public static String badRequestResponseCode = "500";
     public static String badRequestResponseMessage = "Bad request";
-    public static String badRequestResponse = "500 Bad request"; // !!!!!!!
+    public static String badRequestResponse = "400 Bad request"; // !!!!!!!
+    public static String internalServerErrorResponse = "500 Internal server error"; // !!!!!!!
     public static String internalErrorCode = "500";
     public static String internalErrorMessage = "Internal error";
     public static String internalErrorResponse = "500 Internal error"; //!!!!!!!!!
