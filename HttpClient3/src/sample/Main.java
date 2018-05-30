@@ -13,10 +13,8 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/sample.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
-        primaryStage.setMinHeight(180);
-        primaryStage.setMinWidth(370);
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Http Client");
-       // primaryStage.setOnHidden(event -> ((Controller) loader.getController()).exitApplication(event));
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -1,27 +1,46 @@
 package sample;
+
 import java.io.*;
 import java.net.Socket;
+import java.util.PropertyResourceBundle;
 
 public class PutMethod {
     private String filePath;
-    //private OutputStream socketOut;
+
+    PutMethod() {
+        this.filePath = null;
+    }
 
     PutMethod(String filePath) {
         this.filePath = filePath;
-        //this.socketOut = out;
     }
 
-    public void sendRequest() {
+    public Integer sendRequest() throws BadFileNameException {
         try {
             File f = new File(filePath);
             int port = 8080;
             Socket socket;
             socket = new Socket("localhost", port);
             OutputStream socketOut = socket.getOutputStream();
+            PropertyResourceBundle contentTypePR = (PropertyResourceBundle)
+                    PropertyResourceBundle.getBundle("sample.contentType");
+            ServerResponse serverResponse = new ServerResponse(socket.getInputStream());
+            String expansion;
+            String type = null;
+            if(filePath.contains(".")) {
+                expansion = filePath.substring(filePath.lastIndexOf('.'));
+                if(contentTypePR.containsKey(expansion)) {
+                    type = contentTypePR.getString(expansion);
+                }
+            }
+
+            if(type == null) {
+                throw new BadFileNameException();
+            }
 
             socketOut.write(("PUT /" + f.getName() + " HTTP/1.1\r\n").getBytes());
             socketOut.write("Host: localhost:8080\r\n".getBytes());
-            socketOut.write("Content-Type: image/jpeg\r\n".getBytes());
+            socketOut.write(("Content-Type: " + type + "\r\n").getBytes());
             socketOut.write(("Content-Length: " + f.length() + "\r\n").getBytes());
             socketOut.write("Connection: close\r\n".getBytes());
             socketOut.write("\r\n".getBytes());
@@ -43,17 +62,25 @@ public class PutMethod {
                     s -= i;
                 }
                 bos.flush();
+
+                serverResponse.readResponse();
+
                 fis.close();
                 socketOut.close();
+
                 socket.close();
+
+                return  serverResponse.getCode();
             } catch (FileNotFoundException e) {
-                System.err.println("File not found!");
+                throw new BadFileNameException();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }catch (IOException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 
     public void setFilePath(String filePath) {
