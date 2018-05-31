@@ -28,7 +28,7 @@ public class HeadMethod implements HttpMethod {
 
         if(fileName == null) {
             response.setState(notFoundResponse);
-            response.setState("text/html");
+            response.setType("text/html");
             file = new File("src/repository/Error404.html");
         } else if(fileName.contains(".")) {
             expansion = fileName.substring(fileName.lastIndexOf('.'));
@@ -38,12 +38,12 @@ public class HeadMethod implements HttpMethod {
                 file = new File("src/repository/" + fileName);
             } else {
                 response.setState(notFoundResponse);
-                response.setState("text/html");
+                response.setType("text/html");
                 file = new File("src/repository/Error404.html");
             }
         } else {
             response.setState(notFoundResponse);
-            response.setState("text/html");
+            response.setType("text/html");
             file = new File("src/repository/Error404.html");
         }
 

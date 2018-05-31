@@ -11,7 +11,7 @@ public class ThreadPool {
         }
     }
 
-    public void freeThread() {
+    static public void freeThread() {
         if(threadNumber != 20) {
             threadNumber++;
         }

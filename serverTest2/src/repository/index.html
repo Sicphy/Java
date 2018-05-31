@@ -36,25 +36,25 @@
 
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                var arr = this.responseText.split(' ');
+                var arr = this.responseText.split(" ");
                 myFunction(arr);
             }
         };
-        xmlhttp.open("GET", "http://localhost:8080/array_of_wallpaper",false);
+        xmlhttp.open("GET", "http://localhost:8080/images_names.txt",false);
         xmlhttp.send(null);
     }
 
     function myFunction(names) {
         var main = document.createElement('main');
         if(names.length > 0) {
-        for (var i = 0; i < names.length-1; i++) {
+        for (var i = 0; i < names.length; i++) {
             var div = document.createElement('div');
             var img = document.createElement('img');
             var a = document.createElement('a');
             div.className = 'image-wrapper';
-            img.setAttribute('src', 'http://localhost:8080/wallpaper/' + names[i]);
+            img.setAttribute('src', 'http://localhost:8080/' + names[i]);
             img.className = 'image';
-            a.setAttribute('href', 'http://localhost:8080/wallpaper/' + names[i]);
+            a.setAttribute('href', 'http://localhost:8080/' + names[i]);
             a.appendChild(img);
             div.appendChild(a);
             main.appendChild(div);
@@ -69,7 +69,7 @@
     <nav>
         <ul>
             <li><a href="" class="nav-link">Home</a></li>
-            <li><a href="http://localhost:8080/about" class="nav-link">About</a></li>
+            <li><a href="http://localhost:8080/about2.txt" class="nav-link">About</a></li>
             <li><a href="" class="nav-link">Reviews</a></li>
         </ul>
     </nav>

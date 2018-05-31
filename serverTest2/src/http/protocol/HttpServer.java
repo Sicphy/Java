@@ -1,7 +1,12 @@
 package http.protocol;
 
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import static http.protocol.StringConstants.badRequestResponse;
+import static http.protocol.StringConstants.notImplementedResponse;
+import static http.protocol.StringConstants.notSupportedHttpVersionResponse;
 
 public class HttpServer {
 
@@ -26,11 +31,14 @@ public class HttpServer {
         private Socket s;
         private HttpRequest request;
         private HttpResponse response;
+        private BadRequestResponse badRequest;
 
         private SocketProcessor(Socket s) throws Throwable {
             this.s = s;
             this.request = new HttpRequest(s.getInputStream());
             this.response = new HttpResponse(s.getOutputStream());
+            this.badRequest = new BadRequestResponse(s.getOutputStream());
+
         }
 
         public void run() {
@@ -38,8 +46,17 @@ public class HttpServer {
                 request.readInputHeaders();
                 response.setRequest(request);
                 response.writeResponse();
-            } catch (Throwable t) {
-                /*do nothing*/
+            }  catch (BadRequestException e) {
+              badRequest.setResponse(badRequestResponse);
+              badRequest.sendResponse();
+            } catch (BadHttpVersionException e) {
+                badRequest.setResponse(notSupportedHttpVersionResponse);
+                badRequest.sendResponse();
+            } catch (BadMethodException e) {
+                badRequest.setResponse(notImplementedResponse);
+                badRequest.sendResponse();
+            } catch (Throwable e) {
+
             } finally {
                 try {
                     s.close();
@@ -48,6 +65,7 @@ public class HttpServer {
                 }
             }
             System.err.println("Client processing finished");
+            ThreadPool.freeThread();
         }
     }
 }

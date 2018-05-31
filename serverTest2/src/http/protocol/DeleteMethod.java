@@ -18,7 +18,7 @@ public class DeleteMethod implements HttpMethod {
             if(file.delete()) {
                 response.setState(okResponse);
             } else {
-                response.setState(internalServerErrorResponse);
+                response.setState(internalErrorResponse);
             }
         } else {
             response.setState(notFoundResponse);

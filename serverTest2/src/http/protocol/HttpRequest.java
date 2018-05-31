@@ -2,6 +2,8 @@ package http.protocol;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HttpRequest {
     private InputStream is;
@@ -32,7 +34,8 @@ public class HttpRequest {
         }
 
         setHttpHeader(request);
-        System.out.println(request);
+
+        //System.out.println(request);
 
         if(method.equals("PUT")) {
             long s;
@@ -51,21 +54,32 @@ public class HttpRequest {
         }
 
         System.out.println(request);
-        System.out.println(method);
+        /*System.out.println(method);
         System.out.println(url);
         System.out.println(version);
         System.out.println(attributes);
-        System.out.println("File name: " + fileName);
+        System.out.println("File name: " + fileName);*/
     }
 
-    private void setHttpHeader(String header) throws IOException
-    {
+    private void setHttpHeader(String header) throws Throwable {
         attributes = new HashMap<String, String>();
         String [] headerLines = header.split("\r?\n");
         String [] firstLineFields = headerLines[0].split(" ");
-        if(firstLineFields.length != 3) throw new IOException();
+        System.out.println("First line length: " + firstLineFields.length);
+        if(firstLineFields.length != 3) throw new BadRequestException();
         version = firstLineFields[2].trim();
         method = firstLineFields[0].trim();
+        Pattern p = Pattern.compile("^(GET|DELETE|HEAD|PUT)$");
+        Matcher m = p.matcher(method);
+
+        if(!m.matches()) {
+            throw new BadMethodException();
+        }
+
+        if(!version.equals("HTTP/1.1")) {
+            throw new BadHttpVersionException();
+        }
+
         url = firstLineFields[1].trim();
         fileName = url.substring(1);
 
@@ -77,9 +91,7 @@ public class HttpRequest {
         }
     }
 
-    public String getUrl() {
-        return this.url;
-    }
+    public String getUrl() { return this.url; }
     public String getFileName() { return this.fileName; }
     public String  getMethod() { return this.method; }
 }
